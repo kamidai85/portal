@@ -1,169 +1,509 @@
-</div>
-            </div>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>補助金リフォーム.com - 地域から補助金を探す</title>
+    <style>
+        /* リセットCSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* 基本設定 */
+        body {
+            font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ ProN W3', 'メイリオ', Meiryo, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+        
+        a {
+            color: #4caf50;
+            text-decoration: none;
+        }
+        
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* ヘッダー */
+        .header {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            height: 70px;
+        }
+        
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 100%;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4caf50;
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .nav-link {
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .nav-link:hover {
+            color: #4caf50;
+        }
+        
+        /* メインビジュアル */
+        .main-visual {
+            background: linear-gradient(to right, #4caf50, #2e7d32);
+            color: white;
+            text-align: center;
+            padding: 120px 0 60px;
+            margin-top: 70px;
+        }
+        
+        .main-visual h1 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+        
+        .main-visual p {
+            font-size: 18px;
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+        
+        /* ボタン */
+        .btn {
+            display: inline-block;
+            background-color: #ff9800;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #f57c00;
+            text-decoration: none;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid white;
+        }
+        
+        .btn-outline:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+        
+        /* メインコンテンツ */
+        .main-content {
+            padding: 60px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .section-title h2 {
+            font-size: 28px;
+            color: #4caf50;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background-color: #4caf50;
+        }
+        
+        /* 日本地図セクション */
+        .map-section {
+            margin-bottom: 60px;
+        }
+        
+        .region-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .region-tab {
+            padding: 8px 16px;
+            background-color: #e8f5e9;
+            color: #4caf50;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .region-tab:hover, .region-tab.active {
+            background-color: #4caf50;
+            color: white;
+        }
+        
+        /* 日本地図 */
+        .japan-map-container {
+            max-width: 600px;
+            margin: 0 auto 40px;
+            position: relative;
+        }
+        
+        .japan-map {
+            width: 100%;
+        }
+        
+        .prefecture {
+            fill: #e8f5e9;
+            stroke: white;
+            stroke-width: 1;
+            transition: fill 0.3s;
+            cursor: pointer;
+        }
+        
+        .prefecture:hover {
+            fill: #4caf50;
+        }
+        
+        /* 都道府県リスト */
+        .prefecture-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .prefecture-button {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .prefecture-button:hover {
+            border-color: #4caf50;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .count {
+            background-color: #4caf50;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+        
+        /* フッター */
+        .footer {
+            background-color: #333;
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-column h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: #4caf50;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a {
+            color: #bbb;
+            transition: color 0.3s;
+        }
+        
+        .footer-column ul li a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        /* レスポンシブ対応 */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
             
-            <div class="prefecture-list-container" id="chubu-list" role="tabpanel" aria-labelledby="chubu-tab">
-                <h3 class="prefecture-list-title">中部地方の補助金</h3>
-                <div class="prefecture-grid">
-                    <button class="prefecture-button">新潟県 <span class="count">22</span></button>
-                    <button class="prefecture-button">富山県 <span class="count">17</span></button>
-                    <button class="prefecture-button">石川県 <span class="count">16</span></button>
-                    <button class="prefecture-button">福井県 <span class="count">14</span></button>
-                    <button class="prefecture-button">山梨県 <span class="count">15</span></button>
-                    <button class="prefecture-button">長野県 <span class="count">23</span></button>
-                    <button class="prefecture-button">岐阜県 <span class="count">19</span></button>
-                    <button class="prefecture-button">静岡県 <span class="count">24</span></button>
-                    <button class="prefecture-button">愛知県 <span class="count">28</span></button>
-                </div>
-            </div>
+            .main-visual {
+                padding: 100px 0 50px;
+            }
             
-            <div class="prefecture-list-container" id="kinki-list" role="tabpanel" aria-labelledby="kinki-tab">
-                <h3 class="prefecture-list-title">近畿地方の補助金</h3>
-                <div class="prefecture-grid">
-                    <button class="prefecture-button">三重県 <span class="count">18</span></button>
-                    <button class="prefecture-button">滋賀県 <span class="count">17</span></button>
-                    <button class="prefecture-button">京都府 <span class="count">24</span></button>
-                    <button class="prefecture-button">大阪府 <span class="count">32</span></button>
-                    <button class="prefecture-button">兵庫県 <span class="count">27</span></button>
-                    <button class="prefecture-button">奈良県 <span class="count">16</span></button>
-                    <button class="prefecture-button">和歌山県 <span class="count">15</span></button>
-                </div>
-            </div>
+            .main-visual h1 {
+                font-size: 28px;
+            }
             
-            <div class="prefecture-list-container" id="chugoku-list" role="tabpanel" aria-labelledby="chugoku-tab">
-                <h3 class="prefecture-list-title">中国地方の補助金</h3>
-                <div class="prefecture-grid">
-                    <button class="prefecture-button">鳥取県 <span class="count">13</span></button>
-                    <button class="prefecture-button">島根県 <span class="count">14</span></button>
-                    <button class="prefecture-button">岡山県 <span class="count">19</span></button>
-                    <button class="prefecture-button">広島県 <span class="count">23</span></button>
-                    <button class="prefecture-button">山口県 <span class="count">16</span></button>
-                </div>
-            </div>
+            .main-visual p {
+                font-size: 16px;
+            }
             
-            <div class="prefecture-list-container" id="shikoku-list" role="tabpanel" aria-labelledby="shikoku-tab">
-                <h3 class="prefecture-list-title">四国地方の補助金</h3>
-                <div class="prefecture-grid">
-                    <button class="prefecture-button">徳島県 <span class="count">14</span></button>
-                    <button class="prefecture-button">香川県 <span class="count">15</span></button>
-                    <button class="prefecture-button">愛媛県 <span class="count">17</span></button>
-                    <button class="prefecture-button">高知県 <span class="count">14</span></button>
-                </div>
+            .prefecture-list {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ヘッダー -->
+    <header class="header">
+        <div class="container">
+            <div class="header-inner">
+                <a href="#" class="logo">補助金リフォーム.com</a>
+                <nav>
+                    <ul class="nav-menu">
+                        <li><a href="#" class="nav-link">ホーム</a></li>
+                        <li><a href="#" class="nav-link">補助金制度</a></li>
+                        <li><a href="#" class="nav-link">リフォーム事例</a></li>
+                        <li><a href="#" class="nav-link">お問い合わせ</a></li>
+                    </ul>
+                </nav>
             </div>
-            
-            <div class="prefecture-list-container" id="kyushu-list" role="tabpanel" aria-labelledby="kyushu-tab">
-                <h3 class="prefecture-list-title">九州・沖縄地方の補助金</h3>
-                <div class="prefecture-grid">
-                    <button class="prefecture-button">福岡県 <span class="count">25</span></button>
-                    <button class="prefecture-button">佐賀県 <span class="count">13</span></button>
-                    <button class="prefecture-button">長崎県 <span class="count">14</span></button>
-                    <button class="prefecture-button">熊本県 <span class="count">19</span></button>
-                    <button class="prefecture-button">大分県 <span class="count">16</span></button>
-                    <button class="prefecture-button">宮崎県 <span class="count">15</span></button>
-                    <button class="prefecture-button">鹿児島県 <span class="count">18</span></button>
-                    <button class="prefecture-button">沖縄県 <span class="count">19</span></button>
-                </div>
-            </div>
-            
-            <div class="prefecture-list-container" id="all-list" role="tabpanel" aria-labelledby="all-tab">
-                <h3 class="prefecture-list-title">全国の補助金</h3>
-                <div class="prefecture-grid">
-                    <button class="prefecture-button">北海道 <span class="count">26</span></button>
-                    <button class="prefecture-button">青森県 <span class="count">18</span></button>
-                    <button class="prefecture-button">秋田県 <span class="count">15</span></button>
-                    <button class="prefecture-button">岩手県 <span class="count">19</span></button>
-                    <button class="prefecture-button">山形県 <span class="count">16</span></button>
-                    <button class="prefecture-button">宮城県 <span class="count">20</span></button>
-                    <button class="prefecture-button">福島県 <span class="count">21</span></button>
-                    <button class="prefecture-button">茨城県 <span class="count">23</span></button>
-                    <button class="prefecture-button">栃木県 <span class="count">19</span></button>
-                    <button class="prefecture-button">群馬県 <span class="count">18</span></button>
-                    <button class="prefecture-button">埼玉県 <span class="count">29</span></button>
-                    <button class="prefecture-button">千葉県 <span class="count">27</span></button>
-                    <button class="prefecture-button">東京都 <span class="count">35</span></button>
-                    <button class="prefecture-button">神奈川県 <span class="count">31</span></button>
-                    <button class="prefecture-button">新潟県 <span class="count">22</span></button>
-                    <button class="prefecture-button">富山県 <span class="count">17</span></button>
-                    <button class="prefecture-button">石川県 <span class="count">16</span></button>
-                    <button class="prefecture-button">福井県 <span class="count">14</span></button>
-                    <button class="prefecture-button">山梨県 <span class="count">15</span></button>
-                    <button class="prefecture-button">長野県 <span class="count">23</span></button>
-                    <button class="prefecture-button">岐阜県 <span class="count">19</span></button>
-                    <button class="prefecture-button">静岡県 <span class="count">24</span></button>
-                    <button class="prefecture-button">愛知県 <span class="count">28</span></button>
-                    <button class="prefecture-button">三重県 <span class="count">18</span></button>
-                    <button class="prefecture-button">滋賀県 <span class="count">17</span></button>
-                    <button class="prefecture-button">京都府 <span class="count">24</span></button>
-                    <button class="prefecture-button">大阪府 <span class="count">32</span></button>
-                    <button class="prefecture-button">兵庫県 <span class="count">27</span></button>
-                    <button class="prefecture-button">奈良県 <span class="count">16</span></button>
-                    <button class="prefecture-button">和歌山県 <span class="count">15</span></button>
-                    <button class="prefecture-button">鳥取県 <span class="count">13</span></button>
-                    <button class="prefecture-button">島根県 <span class="count">14</span></button>
-                    <button class="prefecture-button">岡山県 <span class="count">19</span></button>
-                    <button class="prefecture-button">広島県 <span class="count">23</span></button>
-                    <button class="prefecture-button">山口県 <span class="count">16</span></button>
-                    <button class="prefecture-button">徳島県 <span class="count">14</span></button>
-                    <button class="prefecture-button">香川県 <span class="count">15</span></button>
-                    <button class="prefecture-button">愛媛県 <span class="count">17</span></button>
-                    <button class="prefecture-button">高知県 <span class="count">14</span></button>
-                    <button class="prefecture-button">福岡県 <span class="count">25</span></button>
-                    <button class="prefecture-button">佐賀県 <span class="count">13</span></button>
-                    <button class="prefecture-button">長崎県 <span class="count">14</span></button>
-                    <button class="prefecture-button">熊本県 <span class="count">19</span></button>
-                    <button class="prefecture-button">大分県 <span class="count">16</span></button>
-                    <button class="prefecture-button">宮崎県 <span class="count">15</span></button>
-                    <button class="prefecture-button">鹿児島県 <span class="count">18</span></button>
-                    <button class="prefecture-button">沖縄県 <span class="count">19</span></button>
-                </div>
+        </div>
+    </header>
+
+    <!-- メインビジュアル -->
+    <section class="main-visual">
+        <div class="container">
+            <h1>あなたの地域の<br>リフォーム補助金を探そう</h1>
+            <p>補助金リフォーム.comでは、全国の自治体が提供するリフォーム補助金制度を簡単に検索できます。あなたの住まいに最適な支援制度をご紹介します。</p>
+            <div>
+                <a href="#map-section" class="btn">地域から探す</a>
+                <a href="#" class="btn btn-outline">条件から探す</a>
             </div>
         </div>
     </section>
 
-    <!-- 特徴セクション -->
-    <section class="features">
+    <!-- メインコンテンツ -->
+    <section class="main-content">
         <div class="container">
-            <div class="section-header fade-in">
-                <h2>補助金リフォーム.comの特徴</h2>
-                <p>私たちだけが提供できる、特別なサービス</p>
-            </div>
-            <div class="features-grid">
-                <div class="feature-card fade-in">
-                    <div class="feature-img">🏠</div>
-                    <div class="feature-content">
-                        <h3>最新の補助金情報</h3>
-                        <p>全国の自治体や国が提供する最新のリフォーム補助金情報を常に更新。見逃しがちな小さな制度まで網羅しています。</p>
-                        <a href="#" class="btn btn-outline">詳しく見る</a>
-                    </div>
+            <!-- 日本地図セクション -->
+            <div id="map-section" class="map-section">
+                <div class="section-title">
+                    <h2>地域から補助金を探す</h2>
+                    <p>お住まいの地域または希望の地域を選んで、利用できるリフォーム補助金を探してみましょう</p>
                 </div>
-                <div class="feature-card fade-in">
-                    <div class="feature-img">👨‍💼</div>
-                    <div class="feature-content">
-                        <h3>専門アドバイザー</h3>
-                        <p>リフォーム補助金の申請に詳しい専門家が、あなたに最適な補助金制度の活用方法をアドバイス。面倒な手続きもサポートします。</p>
-                        <a href="#" class="btn btn-outline">相談する</a>
-                    </div>
+                
+                <!-- 地域タブ -->
+                <div class="region-tabs">
+                    <button class="region-tab active" data-region="all">全国</button>
+                    <button class="region-tab" data-region="hokkaido">北海道</button>
+                    <button class="region-tab" data-region="tohoku">東北</button>
+                    <button class="region-tab" data-region="kanto">関東</button>
+                    <button class="region-tab" data-region="chubu">中部</button>
+                    <button class="region-tab" data-region="kinki">近畿</button>
+                    <button class="region-tab" data-region="chugoku">中国</button>
+                    <button class="region-tab" data-region="shikoku">四国</button>
+                    <button class="region-tab" data-region="kyushu">九州・沖縄</button>
                 </div>
-                <div class="feature-card fade-in">
-                    <div class="feature-img">📱</div>
-                    <div class="feature-content">
-                        <h3>優良施工業者紹介</h3>
-                        <p>全国の厳選された優良リフォーム業者をご紹介。補助金対応の実績豊富な業者だけを厳選しているので安心です。</p>
-                        <a href="#" class="btn btn-outline">業者を探す</a>
-                    </div>
+                
+                <!-- 日本地図（シンプル版） -->
+                <div class="japan-map-container">
+                    <svg class="japan-map" viewBox="0 0 553 528" xmlns="http://www.w3.org/2000/svg">
+                        <!-- 簡略化した日本地図（見やすさ重視） -->
+                        <g id="hokkaido-region">
+                            <path class="prefecture hokkaido" id="hokkaido" d="M403,80 L443,100 L483,70 L463,40 L483,10 L413,0 L373,20 L363,70 Z" data-name="北海道" data-count="26"/>
+                        </g>
+                        
+                        <g id="tohoku-region">
+                            <path class="prefecture tohoku" id="aomori" d="M383,110 L393,130 L413,130 L423,110 L413,100 L393,100 Z" data-name="青森県" data-count="18"/>
+                            <path class="prefecture tohoku" id="akita" d="M373,140 L393,130 L383,110 L363,120 L363,130 Z" data-name="秋田県" data-count="15"/>
+                            <path class="prefecture tohoku" id="iwate" d="M393,130 L413,130 L423,140 L413,150 L393,150 Z" data-name="岩手県" data-count="19"/>
+                            <path class="prefecture tohoku" id="yamagata" d="M373,140 L363,150 L373,170 L383,160 L383,150 Z" data-name="山形県" data-count="16"/>
+                            <path class="prefecture tohoku" id="miyagi" d="M393,150 L413,150 L413,170 L393,170 L383,160 Z" data-name="宮城県" data-count="20"/>
+                            <path class="prefecture tohoku" id="fukushima" d="M373,170 L393,170 L413,170 L413,190 L383,190 L363,180 Z" data-name="福島県" data-count="21"/>
+                        </g>
+                        
+                        <g id="kanto-region">
+                            <path class="prefecture kanto" id="ibaraki" d="M393,190 L413,190 L413,210 L393,210 Z" data-name="茨城県" data-count="23"/>
+                            <path class="prefecture kanto" id="tochigi" d="M383,190 L393,190 L393,210 L383,210 Z" data-name="栃木県" data-count="19"/>
+                            <path class="prefecture kanto" id="gunma" d="M363,190 L383,190 L383,210 L373,210 Z" data-name="群馬県" data-count="18"/>
+                            <path class="prefecture kanto" id="saitama" d="M373,210 L393,210 L393,220 L373,220 Z" data-name="埼玉県" data-count="29"/>
+                            <path class="prefecture kanto" id="chiba" d="M393,210 L413,210 L423,230 L403,240 L393,220 Z" data-name="千葉県" data-count="27"/>
+                            <path class="prefecture kanto" id="tokyo" d="M373,220 L393,220 L403,240 L373,240 Z" data-name="東京都" data-count="35"/>
+                            <path class="prefecture kanto" id="kanagawa" d="M373,240 L403,240 L393,250 L363,250 Z" data-name="神奈川県" data-count="31"/>
+                        </g>
+                        
+                        <g id="chubu-region">
+                            <path class="prefecture chubu" id="niigata" d="M363,150 L343,160 L343,180 L363,180 Z" data-name="新潟県" data-count="22"/>
+                            <path class="prefecture chubu" id="toyama" d="M343,180 L323,180 L323,190 L343,190 Z" data-name="富山県" data-count="17"/>
+                            <path class="prefecture chubu" id="ishikawa" d="M323,180 L313,160 L303,180 L313,190 L323,190 Z" data-name="石川県" data-count="16"/>
+                            <path class="prefecture chubu" id="fukui" d="M303,180 L293,190 L303,200 L313,190 Z" data-name="福井県" data-count="14"/>
+                            <path class="prefecture chubu" id="yamanashi" d="M363,210 L363,230 L343,230 L343,210 Z" data-name="山梨県" data-count="15"/>
+                            <path class="prefecture chubu" id="nagano" d="M343,190 L343,210 L363,210 L363,180 L343,180 Z" data-name="長野県" data-count="23"/>
+                            <path class="prefecture chubu" id="gifu" d="M323,190 L343,190 L343,230 L323,230 L313,210 Z" data-name="岐阜県" data-count="19"/>
+                            <path class="prefecture chubu" id="shizuoka" d="M343,230 L363,230 L363,250 L353,260 L333,250 Z" data-name="静岡県" data-count="24"/>
+                            <path class="prefecture chubu" id="aichi" d="M323,230 L343,230 L333,250 L313,250 Z" data-name="愛知県" data-count="28"/>
+                        </g>
+                        
+                        <g id="kinki-region">
+                            <path class="prefecture kinki" id="mie" d="M313,250 L333,250 L323,260 L303,260 Z" data-name="三重県" data-count="18"/>
+                            <path class="prefecture kinki" id="shiga" d="M303,200 L313,210 L313,230 L303,230 Z" data-name="滋賀県" data-count="17"/>
+                            <path class="prefecture kinki" id="kyoto" d="M293,190 L303,200 L303,230 L293,230 L283,210 Z" data-name="京都府" data-count="24"/>
+                            <path class="prefecture kinki" id="osaka" d="M293,230 L303,230 L303,250 L293,250 Z" data-name="大阪府" data-count="32"/>
+                            <path class="prefecture kinki" id="hyogo" d="M283,210 L293,230 L293,250 L273,250 L263,230 Z" data-name="兵庫県" data-count="27"/>
+                            <path class="prefecture kinki" id="nara" d="M303,230 L313,230 L313,250 L303,250 Z" data-name="奈良県" data-count="16"/>
+                            <path class="prefecture kinki" id="wakayama" d="M293,250 L303,250 L313,250 L303,260 L293,270 Z" data-name="和歌山県" data-count="15"/>
+                        </g>
+                        
+                        <g id="chugoku-region">
+                            <path class="prefecture chugoku" id="tottori" d="M243,210 L263,210 L263,230 L243,230 Z" data-name="鳥取県" data-count="13"/>
+                            <path class="prefecture chugoku" id="shimane" d="M223,210 L243,210 L243,230 L223,230 Z" data-name="島根県" data-count="14"/>
+                            <path class="prefecture chugoku" id="okayama" d="M243,230 L263,230 L273,250 L253,250 Z" data-name="岡山県" data-count="19"/>
+                            <path class="prefecture chugoku" id="hiroshima" d="M223,230 L243,230 L253,250 L223,250 Z" data-name="広島県" data-count="23"/>
+                            <path class="prefecture chugoku" id="yamaguchi" d="M193,230 L223,230 L223,250 L203,260 Z" data-name="山口県" data-count="16"/>
+                        </g>
+                        
+                        <g id="shikoku-region">
+                            <path class="prefecture shikoku" id="tokushima" d="M273,270 L283,270 L283,290 L273,290 Z" data-name="徳島県" data-count="14"/>
+                            <path class="prefecture shikoku" id="kagawa" d="M253,270 L273,270 L273,290 L253,290 Z" data-name="香川県" data-count="15"/>
+                            <path class="prefecture shikoku" id="ehime" d="M233,270 L253,270 L253,290 L233,290 Z" data-name="愛媛県" data-count="17"/>
+                            <path class="prefecture shikoku" id="kochi" d="M233,290 L253,290 L273,290 L283,290 L283,310 L233,310 Z" data-name="高知県" data-count="14"/>
+                        </g>
+                        
+                        <g id="kyushu-region">
+                            <path class="prefecture kyushu" id="fukuoka" d="M173,270 L193,270 L193,290 L173,290 Z" data-name="福岡県" data-count="25"/>
+                            <path class="prefecture kyushu" id="saga" d="M153,270 L173,270 L173,290 L153,290 Z" data-name="佐賀県" data-count="13"/>
+                            <path class="prefecture kyushu" id="nagasaki" d="M133,270 L153,270 L153,290 L133,290 Z" data-name="長崎県" data-count="14"/>
+                            <path class="prefecture kyushu" id="kumamoto" d="M153,290 L173,290 L173,310 L153,310 Z" data-name="熊本県" data-count="19"/>
+                            <path class="prefecture kyushu" id="oita" d="M173,290 L193,290 L193,310 L173,310 Z" data-name="大分県" data-count="16"/>
+                            <path class="prefecture kyushu" id="miyazaki" d="M173,310 L193,310 L193,330 L173,330 Z" data-name="宮崎県" data-count="15"/>
+                            <path class="prefecture kyushu" id="kagoshima" d="M153,310 L173,310 L173,330 L153,350 L133,330 Z" data-name="鹿児島県" data-count="18"/>
+                            <path class="prefecture kyushu" id="okinawa" d="M123,380 L143,380 L143,400 L123,400 Z" data-name="沖縄県" data-count="19"/>
+                        </g>
+                    </svg>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTAセクション -->
-    <section class="cta">
-        <div class="container">
-            <div class="cta-container fade-in">
-                <h2>あなたも補助金を活用して、快適な住まいへ</h2>
-                <p>リフォームの費用負担を減らし、理想の住まいを手に入れましょう。まずは無料相談から。</p>
-                <div class="cta-buttons">
-                    <a href="#" class="btn btn-white">無料相談を予約する</a>
-                    <a href="#" class="btn btn-outline">資料をダウンロード</a>
+                
+                <!-- 都道府県リスト -->
+                <div id="prefecture-container">
+                    <div class="prefecture-list" id="all-list">
+                        <!-- 北海道 -->
+                        <button class="prefecture-button">北海道 <span class="count">26</span></button>
+                        
+                        <!-- 東北 -->
+                        <button class="prefecture-button">青森県 <span class="count">18</span></button>
+                        <button class="prefecture-button">秋田県 <span class="count">15</span></button>
+                        <button class="prefecture-button">岩手県 <span class="count">19</span></button>
+                        <button class="prefecture-button">山形県 <span class="count">16</span></button>
+                        <button class="prefecture-button">宮城県 <span class="count">20</span></button>
+                        <button class="prefecture-button">福島県 <span class="count">21</span></button>
+                        
+                        <!-- 関東 -->
+                        <button class="prefecture-button">茨城県 <span class="count">23</span></button>
+                        <button class="prefecture-button">栃木県 <span class="count">19</span></button>
+                        <button class="prefecture-button">群馬県 <span class="count">18</span></button>
+                        <button class="prefecture-button">埼玉県 <span class="count">29</span></button>
+                        <button class="prefecture-button">千葉県 <span class="count">27</span></button>
+                        <button class="prefecture-button">東京都 <span class="count">35</span></button>
+                        <button class="prefecture-button">神奈川県 <span class="count">31</span></button>
+                        
+                        <!-- 中部 -->
+                        <button class="prefecture-button">新潟県 <span class="count">22</span></button>
+                        <button class="prefecture-button">富山県 <span class="count">17</span></button>
+                        <button class="prefecture-button">石川県 <span class="count">16</span></button>
+                        <button class="prefecture-button">福井県 <span class="count">14</span></button>
+                        <button class="prefecture-button">山梨県 <span class="count">15</span></button>
+                        <button class="prefecture-button">長野県 <span class="count">23</span></button>
+                        <button class="prefecture-button">岐阜県 <span class="count">19</span></button>
+                        <button class="prefecture-button">静岡県 <span class="count">24</span></button>
+                        <button class="prefecture-button">愛知県 <span class="count">28</span></button>
+                        
+                        <!-- 近畿 -->
+                        <button class="prefecture-button">三重県 <span class="count">18</span></button>
+                        <button class="prefecture-button">滋賀県 <span class="count">17</span></button>
+                        <button class="prefecture-button">京都府 <span class="count">24</span></button>
+                        <button class="prefecture-button">大阪府 <span class="count">32</span></button>
+                        <button class="prefecture-button">兵庫県 <span class="count">27</span></button>
+                        <button class="prefecture-button">奈良県 <span class="count">16</span></button>
+                        <button class="prefecture-button">和歌山県 <span class="count">15</span></button>
+                        
+                        <!-- 中国 -->
+                        <button class="prefecture-button">鳥取県 <span class="count">13</span></button>
+                        <button class="prefecture-button">島根県 <span class="count">14</span></button>
+                        <button class="prefecture-button">岡山県 <span class="count">19</span></button>
+                        <button class="prefecture-button">広島県 <span class="count">23</span></button>
+                        <button class="prefecture-button">山口県 <span class="count">16</span></button>
+                        
+                        <!-- 四国 -->
+                        <button class="prefecture-button">徳島県 <span class="count">14</span></button>
+                        <button class="prefecture-button">香川県 <span class="count">15</span></button>
+                        <button class="prefecture-button">愛媛県 <span class="count">17</span></button>
+                        <button class="prefecture-button">高知県 <span class="count">14</span></button>
+                        
+                        <!-- 九州・沖縄 -->
+                        <button class="prefecture-button">福岡県 <span class="count">25</span></button>
+                        <button class="prefecture-button">佐賀県 <span class="count">13</span></button>
+                        <button class="prefecture-button">長崎県 <span class="count">14</span></button>
+                        <button class="prefecture-button">熊本県 <span class="count">19</span></button>
+                        <button class="prefecture-button">大分県 <span class="count">16</span></button>
+                        <button class="prefecture-button">宮崎県 <span class="count">15</span></button>
+                        <button class="prefecture-button">鹿児島県 <span class="count">18</span></button>
+                        <button class="prefecture-button">沖縄県 <span class="count">19</span></button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -175,8 +515,8 @@
             <div class="footer-grid">
                 <div class="footer-column">
                     <h3>補助金リフォーム.com</h3>
-                    <p style="color: rgba(255,255,255,0.8); margin-bottom: 20px;">リフォーム補助金制度を活用して、お得に住まいの価値を高めるサポートをします。</p>
-                    <p style="color: rgba(255,255,255,0.8);">〒100-0001<br>東京都千代田区1-1-1<br>補助金リフォームビル5F</p>
+                    <p>リフォーム補助金制度を活用して、お得に住まいの価値を高めるサポートをします。</p>
+                    <p style="margin-top: 20px;">〒100-0001<br>東京都千代田区1-1-1<br>補助金リフォームビル5F</p>
                 </div>
                 <div class="footer-column">
                     <h3>サービス</h3>
@@ -213,199 +553,67 @@
                 <p>© 2025 補助金リフォーム.com All Rights Reserved.</p>
             </div>
         </div>
+    </footer>
+
     <script>
+        // DOMが完全に読み込まれたあとに実行
         document.addEventListener('DOMContentLoaded', function() {
-            'use strict';
-            
-            // -------------------------------------------------------
-            // 1. アニメーション処理
-            // -------------------------------------------------------
-            const handleIntersection = (entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        observer.unobserve(entry.target); // 一度表示したら監視を解除
-                    }
-                });
-            };
-            
-            // Intersection Observerの設定
-            const observerOptions = {
-                root: null,
-                rootMargin: '0px',
-                threshold: 0.15
-            };
-            
-            const observer = new IntersectionObserver(handleIntersection, observerOptions);
-            
-            // フェードイン要素を監視対象に追加
-            document.querySelectorAll('.fade-in').forEach(element => {
-                observer.observe(element);
-            });
-            
-            // -------------------------------------------------------
-            // 2. 日本地図の機能
-            // -------------------------------------------------------
-            const mapContainer = document.querySelector('.japan-map-container');
-            const tooltip = document.querySelector('.tooltip');
+            // 要素の取得
             const prefectures = document.querySelectorAll('.prefecture');
             const regionTabs = document.querySelectorAll('.region-tab');
-            const prefectureListContainers = document.querySelectorAll('.prefecture-list-container');
+            const prefectureContainer = document.getElementById('prefecture-container');
             
-            // モバイル判定
-            const isMobile = () => window.matchMedia('(max-width: 768px)').matches;
-            
-            // ツールチップの位置調整関数
-            const positionTooltip = (e, element) => {
-                const mapRect = mapContainer.getBoundingClientRect();
-                let x, y;
-                
-                if (e.type === 'touchstart' || e.type === 'touchmove') {
-                    // タッチイベントの場合
-                    const touch = e.touches[0];
-                    x = touch.clientX - mapRect.left;
-                    y = touch.clientY - mapRect.top;
-                } else {
-                    // マウスイベントの場合
-                    x = e.clientX - mapRect.left;
-                    y = e.clientY - mapRect.top;
-                }
-                
-                // ツールチップの大きさを考慮して調整
-                const tooltipWidth = tooltip.offsetWidth;
-                const tooltipHeight = tooltip.offsetHeight;
-                
-                // マップの境界に近い場合は位置を調整
-                if (x + tooltipWidth / 2 > mapRect.width) {
-                    x = mapRect.width - tooltipWidth / 2;
-                } else if (x - tooltipWidth / 2 < 0) {
-                    x = tooltipWidth / 2;
-                }
-                
-                tooltip.style.left = `${x}px`;
-                tooltip.style.top = `${y - tooltipHeight - 10}px`;
-            };
-            
-            // 都道府県にイベントを設定
-            prefectures.forEach(prefecture => {
-                const showTooltip = (e) => {
-                    const name = prefecture.getAttribute('data-name');
-                    const count = prefecture.getAttribute('data-count');
+            // 地域タブのクリックイベント
+            regionTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // アクティブクラスを全て解除
+                    regionTabs.forEach(t => t.classList.remove('active'));
                     
-                    tooltip.textContent = `${name}：${count}件の補助金`;
-                    tooltip.classList.add('visible');
+                    // クリックされたタブをアクティブに
+                    this.classList.add('active');
                     
-                    positionTooltip(e, prefecture);
+                    // 選択された地域を取得
+                    const region = this.getAttribute('data-region');
                     
-                    // アクセシビリティのために焦点が当たった時にもツールチップを表示
-                    if (e.type === 'focus') {
-                        tooltip.style.left = '50%';
-                        tooltip.style.top = '10px';
-                        tooltip.style.transform = 'translateX(-50%)';
+                    // 地域に基づいて都道府県をフィルタリング
+                    if (region === 'all') {
+                        // 全ての都道府県を表示
+                        prefectures.forEach(pref => {
+                            pref.style.fill = ''; // デフォルトの色に戻す
+                        });
+                        
+                        // 全国リストを表示
+                        showPrefectureList('all');
+                    } else {
+                        // 選択された地域の都道府県をハイライト
+                        prefectures.forEach(pref => {
+                            if (pref.classList.contains(region)) {
+                                pref.style.fill = '#4caf50'; // ハイライト色
+                            } else {
+                                pref.style.fill = '#e8f5e9'; // デフォルト色
+                            }
+                        });
+                        
+                        // 地域に基づいたリストを表示
+                        showRegionPrefectures(region);
                     }
-                };
-                
-                const hideTooltip = () => {
-                    tooltip.classList.remove('visible');
-                };
-                
-                const handleClick = () => {
-                    const prefId = prefecture.id;
-                    const regionClass = Array.from(prefecture.classList).find(cls => 
-                        ['hokkaido', 'tohoku', 'kanto', 'chubu', 'kinki', 'chugoku', 'shikoku', 'kyushu'].includes(cls)
-                    );
-                    
-                    // 対応する地域タブをアクティブに
-                    regionTabs.forEach(tab => {
-                        if (tab.getAttribute('data-region') === regionClass) {
-                            tab.click();
-                        }
-                    });
-                };
-                
-                // マウスイベント
-                prefecture.addEventListener('mouseenter', showTooltip);
-                prefecture.addEventListener('mousemove', showTooltip);
-                prefecture.addEventListener('mouseleave', hideTooltip);
-                prefecture.addEventListener('click', handleClick);
-                
-                // キーボードアクセシビリティ
-                prefecture.addEventListener('focus', showTooltip);
-                prefecture.addEventListener('blur', hideTooltip);
-                prefecture.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        handleClick();
-                    }
-                });
-                
-                // タッチデバイス対応
-                prefecture.addEventListener('touchstart', showTooltip, { passive: true });
-                prefecture.addEventListener('touchmove', showTooltip, { passive: true });
-                prefecture.addEventListener('touchend', () => {
-                    // 少し遅延させてからツールチップを非表示にする
-                    setTimeout(hideTooltip, 1500);
                 });
             });
             
-            // 地域タブのイベント設定
-            regionTabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    const region = this.getAttribute('data-region');
-                    
-                    // タブのアクティブ状態を切り替え
-                    regionTabs.forEach(t => {
-                        t.classList.remove('active');
-                        t.setAttribute('aria-selected', 'false');
-                    });
-                    this.classList.add('active');
-                    this.setAttribute('aria-selected', 'true');
-                    
-                    // 都道府県リストの表示を切り替え
-                    prefectureListContainers.forEach(container => {
-                        container.classList.remove('active');
-                        if (container.id === `${region}-list`) {
-                            container.classList.add('active');
-                            
-                            // スムーズスクロール（モバイルの場合のみ）
-                            if (isMobile()) {
-                                setTimeout(() => {
-                                    container.scrollIntoView({
-                                        behavior: 'smooth',
-                                        block: 'start'
-                                    });
-                                }, 300);
-                            }
-                        }
-                    });
-                    
-                    // 地図上での地域のハイライト
-                    if (region === 'all') {
-                        mapContainer.classList.remove('region-active');
-                        prefectures.forEach(pref => {
-                            pref.classList.remove('active');
-                        });
-                    } else {
-                        mapContainer.classList.add('region-active');
-                        prefectures.forEach(pref => {
-                            const prefRegion = Array.from(pref.classList).find(cls => 
-                                ['hokkaido', 'tohoku', 'kanto', 'chubu', 'kinki', 'chugoku', 'shikoku', 'kyushu'].includes(cls)
-                            );
-                            
-                            pref.classList.remove('active');
-                            if (prefRegion === region) {
-                                pref.classList.add('active');
-                            }
-                        });
-                    }
+            // 都道府県のクリックイベント
+            prefectures.forEach(prefecture => {
+                prefecture.addEventListener('click', function() {
+                    const prefName = this.getAttribute('data-name');
+                    const count = this.getAttribute('data-count');
+                    alert(`${prefName}の補助金情報（${count}件）へ移動します`);
+                    // 実際はここでリダイレクトなどの処理
                 });
                 
-                // キーボードアクセシビリティ
-                tab.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        tab.click();
-                    }
+                // マウスオーバーイベント
+                prefecture.addEventListener('mouseover', function() {
+                    const prefName = this.getAttribute('data-name');
+                    const count = this.getAttribute('data-count');
+                    // ツールチップなどを表示する場合はここに処理
                 });
             });
             
@@ -413,1299 +621,92 @@
             document.querySelectorAll('.prefecture-button').forEach(button => {
                 button.addEventListener('click', function() {
                     const prefName = this.textContent.split(' ')[0];
-                    // 実際の実装ではリダイレクト
-                    window.location.href = `./subsidy.html?prefecture=${encodeURIComponent(prefName)}`;
-                });
-                
-                // キーボードアクセシビリティ
-                button.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        button.click();
-                    }
+                    alert(`${prefName}の補助金情報ページへ移動します`);
+                    // 実際はここでリダイレクトなどの処理
                 });
             });
             
-            // ナビゲーションのモバイルメニュー
-            const hamburger = document.querySelector('.hamburger');
-            const navMenu = document.getElementById('nav-menu');
-            
-            if (hamburger) {
-                hamburger.addEventListener('click', function() {
-                    const expanded = this.getAttribute('aria-expanded') === 'true';
-                    
-                    this.setAttribute('aria-expanded', !expanded);
-                    this.classList.toggle('open');
-                    navMenu.classList.toggle('open');
-                    
-                    // アクセシビリティのため、アリアラベルを変更
-                    this.setAttribute('aria-label', expanded ? 'メニューを開く' : 'メニューを閉じる');
+            // 地域ごとの都道府県リストを表示する関数
+            function showRegionPrefectures(region) {
+                // すでにある全国リストを使って、該当の地域の県だけフィルタリングして表示
+                const allButtons = document.querySelectorAll('#all-list .prefecture-button');
+                const regionPrefectures = [];
+                
+                // 地域ごとの都道府県のリスト
+                const regionMap = {
+                    'hokkaido': ['北海道'],
+                    'tohoku': ['青森県', '秋田県', '岩手県', '山形県', '宮城県', '福島県'],
+                    'kanto': ['茨城県', '栃木県', '群馬県', '埼玉県', '千葉県', '東京都', '神奈川県'],
+                    'chubu': ['新潟県', '富山県', '石川県', '福井県', '山梨県', '長野県', '岐阜県', '静岡県', '愛知県'],
+                    'kinki': ['三重県', '滋賀県', '京都府', '大阪府', '兵庫県', '奈良県', '和歌山県'],
+                    'chugoku': ['鳥取県', '島根県', '岡山県', '広島県', '山口県'],
+                    'shikoku': ['徳島県', '香川県', '愛媛県', '高知県'],
+                    'kyushu': ['福岡県', '佐賀県', '長崎県', '熊本県', '大分県', '宮崎県', '鹿児島県', '沖縄県']
+                };
+                
+                // 該当の地域の県だけをフィルタリング
+                allButtons.forEach(button => {
+                    const prefName = button.textContent.split(' ')[0];
+                    if (regionMap[region].includes(prefName)) {
+                        const clone = button.cloneNode(true);
+                        regionPrefectures.push(clone);
+                    }
                 });
+                
+                // 既存のリストをクリアして、フィルタリングしたものを表示
+                prefectureContainer.innerHTML = '';
+                const newList = document.createElement('div');
+                newList.className = 'prefecture-list';
+                newList.id = `${region}-list`;
+                
+                regionPrefectures.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const prefName = this.textContent.split(' ')[0];
+                        alert(`${prefName}の補助金情報ページへ移動します`);
+                    });
+                    newList.appendChild(button);
+                });
+                
+                prefectureContainer.appendChild(newList);
+            }
+            
+            // デフォルトで全国を表示
+            function showPrefectureList(listId) {
+                if (listId === 'all') {
+                    prefectureContainer.innerHTML = document.getElementById('all-list').outerHTML;
+                    
+                    // 新しく追加されたボタンにイベントリスナーを設定
+                    document.querySelectorAll('#prefecture-container .prefecture-button').forEach(button => {
+                        button.addEventListener('click', function() {
+                            const prefName = this.textContent.split(' ')[0];
+                            alert(`${prefName}の補助金情報ページへ移動します`);
+                        });
+                    });
+                }
             }
             
             // スムーススクロール
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
+                anchor.addEventListener('click', function (e) {
                     e.preventDefault();
                     
-                    const targetId = this.getAttribute('href');
-                    if (targetId === '#') return;
-                    
-                    const target = document.querySelector(targetId);
+                    const target = document.querySelector(this.getAttribute('href'));
                     if (target) {
-                        // ヘッダーの高さを考慮したスクロール位置
                         const headerHeight = document.querySelector('.header').offsetHeight;
-                        const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - headerHeight;
-                        
+                        const elementPosition = target.offsetTop;
+                        const offsetPosition = elementPosition - headerHeight;
+
                         window.scrollTo({
-                            top: targetPosition,
+                            top: offsetPosition,
                             behavior: 'smooth'
                         });
-                        
-                        // モバイルメニューが開いていたら閉じる
-                        if (hamburger && hamburger.classList.contains('open')) {
-                            hamburger.click();
-                        }
                     }
                 });
             });
             
-            // 初期表示（全国）
-            document.querySelector('[data-region="all"]').click();
+            // 初期表示
+            document.querySelector('.region-tab[data-region="all"]').click();
         });
     </script>
 </body>
-</html><!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="補助金リフォーム.comで地域ごとの補助金制度を確認。あなたのお住いの地域で利用できるリフォーム補助金をチェックできます。">
-    <meta name="format-detection" content="telephone=no">
-    <title>補助金リフォーム.com - 地域から補助金を探す</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-        /* ============================================
-           基本設定とリセット
-        ============================================ */
-        :root {
-            /* カラー設定 */
-            --primary-color: #4caf50;  /* メインカラー：緑系 */
-            --primary-dark: #388e3c;
-            --primary-light: #81c784;
-            --secondary-color: #ff8f00;  /* アクセントカラー：オレンジ系 */
-            --secondary-dark: #e65100;
-            --secondary-light: #ffb74d;
-            --text-color: #333333;
-            --text-light: #757575;
-            --text-xlight: #9e9e9e;
-            --bg-color: #ffffff;
-            --bg-light: #f5f5f5;
-            --bg-dark: #e0e0e0;
-            --border-color: #dddddd;
-            --success: #4caf50;
-            --info: #2196f3;
-            --warning: #ff9800;
-            --danger: #f44336;
-            
-            /* サイズ・スペース */
-            --container-width: 1200px;
-            --header-height: 70px;
-            --radius-sm: 4px;
-            --radius-md: 8px;
-            --radius-lg: 12px;
-            --radius-xl: 20px;
-            --space-xs: 4px;
-            --space-sm: 8px;
-            --space-md: 16px;
-            --space-lg: 24px;
-            --space-xl: 32px;
-            --space-xxl: 48px;
-            
-            /* フォント */
-            --font-family: 'Noto Sans JP', sans-serif;
-            --font-size-xs: 12px;
-            --font-size-sm: 14px;
-            --font-size-md: 16px;
-            --font-size-lg: 18px;
-            --font-size-xl: 24px;
-            --font-size-xxl: 28px;
-            --font-size-xxxl: 36px;
-            
-            /* エフェクト */
-            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
-            --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.1);
-            --shadow-xl: 0 8px 16px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s ease;
-        }
-        
-        *, *::before, *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        html {
-            font-size: 16px;
-            -webkit-text-size-adjust: 100%;
-            -ms-text-size-adjust: 100%;
-            scroll-behavior: smooth;
-        }
-        
-        body {
-            font-family: var(--font-family);
-            line-height: 1.6;
-            color: var(--text-color);
-            background-color: var(--bg-color);
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            overflow-x: hidden;
-        }
-        
-        img, svg {
-            max-width: 100%;
-            height: auto;
-            vertical-align: middle;
-        }
-        
-        a {
-            color: var(--primary-color);
-            text-decoration: none;
-            transition: var(--transition);
-        }
-        
-        a:hover, a:focus {
-            color: var(--primary-dark);
-            text-decoration: underline;
-        }
-        
-        button, input, select, textarea {
-            font-family: inherit;
-            font-size: inherit;
-            line-height: inherit;
-            color: inherit;
-        }
-        
-        button {
-            cursor: pointer;
-            border: none;
-            background: none;
-            font-family: inherit;
-        }
-        
-        button:focus, input:focus, textarea:focus, select:focus {
-            outline: none;
-        }
-        
-        ul, ol {
-            list-style: none;
-        }
-        
-        /* アクセシビリティ対応 */
-        .visually-hidden {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border: 0;
-        }
-        
-        /* ============================================
-           レイアウト
-        ============================================ */
-        .container {
-            width: 100%;
-            max-width: var(--container-width);
-            margin-inline: auto;
-            padding-inline: var(--space-lg);
-        }
-        
-        @media (max-width: 1240px) {
-            .container {
-                max-width: 100%;
-            }
-        }
-        
-        .section {
-            padding-block: var(--space-xxl);
-        }
-        
-        .section-sm {
-            padding-block: var(--space-lg);
-        }
-        
-        .section-lg {
-            padding-block: calc(var(--space-xxl) * 1.5);
-        }
-        
-        .flex {
-            display: flex;
-        }
-        
-        .flex-wrap {
-            flex-wrap: wrap;
-        }
-        
-        .flex-column {
-            flex-direction: column;
-        }
-        
-        .justify-center {
-            justify-content: center;
-        }
-        
-        .justify-between {
-            justify-content: space-between;
-        }
-        
-        .align-center {
-            align-items: center;
-        }
-        
-        .text-center {
-            text-align: center;
-        }
-        
-        .text-left {
-            text-align: left;
-        }
-        
-        .text-right {
-            text-align: right;
-        }
-        
-        .grid {
-            display: grid;
-            gap: var(--space-lg);
-        }
-        
-        .grid-cols-1 {
-            grid-template-columns: 1fr;
-        }
-        
-        .grid-cols-2 {
-            grid-template-columns: repeat(2, 1fr);
-        }
-        
-        .grid-cols-3 {
-            grid-template-columns: repeat(3, 1fr);
-        }
-        
-        .grid-cols-4 {
-            grid-template-columns: repeat(4, 1fr);
-        }
-        
-        @media (max-width: 992px) {
-            .grid-cols-2, .grid-cols-3, .grid-cols-4 {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .grid-cols-2, .grid-cols-3, .grid-cols-4 {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        /* ヘッダー */
-        .header {
-            background-color: var(--bg-color);
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            height: var(--header-height);
-            box-shadow: var(--shadow-md);
-        }
-        
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 100%;
-        }
-        
-        .logo {
-            font-size: var(--font-size-xl);
-            font-weight: 700;
-            color: var(--primary-color);
-            line-height: 1;
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm);
-        }
-        
-        .logo img {
-            height: 36px;
-            width: auto;
-        }
-        
-        .nav {
-            display: flex;
-            align-items: center;
-        }
-        
-        .nav-menu {
-            display: flex;
-            gap: var(--space-lg);
-        }
-        
-        .nav-link {
-            font-size: var(--font-size-md);
-            font-weight: 500;
-            color: var(--text-color);
-            position: relative;
-            padding: var(--space-xs);
-        }
-        
-        .nav-link:hover, .nav-link:focus {
-            color: var(--primary-color);
-            text-decoration: none;
-        }
-        
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: -4px;
-            height: 2px;
-            background-color: var(--primary-color);
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
-        }
-        
-        .nav-link:hover::after, .nav-link:focus::after, .nav-link.active::after {
-            transform: scaleX(1);
-        }
-        
-        .hamburger {
-            display: none;
-            cursor: pointer;
-            width: 24px;
-            height: 18px;
-            position: relative;
-            transform: rotate(0deg);
-            transition: .5s ease-in-out;
-        }
-        
-        .hamburger span {
-            display: block;
-            position: absolute;
-            height: 2px;
-            width: 100%;
-            background: var(--text-color);
-            border-radius: 9px;
-            left: 0;
-            transform: rotate(0deg);
-            transition: .25s ease-in-out;
-        }
-        
-        .hamburger span:nth-child(1) {
-            top: 0px;
-        }
-        
-        .hamburger span:nth-child(2), .hamburger span:nth-child(3) {
-            top: 8px;
-        }
-        
-        .hamburger span:nth-child(4) {
-            top: 16px;
-        }
-        
-        .hamburger.open span:nth-child(1) {
-            top: 8px;
-            width: 0%;
-            left: 50%;
-        }
-        
-        .hamburger.open span:nth-child(2) {
-            transform: rotate(45deg);
-        }
-        
-        .hamburger.open span:nth-child(3) {
-            transform: rotate(-45deg);
-        }
-        
-        .hamburger.open span:nth-child(4) {
-            top: 8px;
-            width: 0%;
-            left: 50%;
-        }
-        
-        @media (max-width: 768px) {
-            .hamburger {
-                display: block;
-                z-index: 1001;
-            }
-            
-            .nav-menu {
-                position: fixed;
-                top: var(--header-height);
-                left: 0;
-                right: 0;
-                background-color: var(--bg-color);
-                box-shadow: var(--shadow-md);
-                flex-direction: column;
-                gap: 0;
-                max-height: 0;
-                overflow: hidden;
-                transition: max-height 0.3s ease;
-            }
-            
-            .nav-menu.open {
-                max-height: 500px;
-            }
-            
-            .nav-link {
-                display: block;
-                padding: var(--space-md);
-                width: 100%;
-                text-align: center;
-                border-bottom: 1px solid var(--border-color);
-            }
-        }
-        
-        /* メインビジュアル */
-        .main-visual {
-            position: relative;
-            background: linear-gradient(135deg, var(--primary-light), var(--primary-color));
-            color: white;
-            padding-top: calc(var(--header-height) + var(--space-xxl));
-            padding-bottom: var(--space-xxl);
-            overflow: hidden;
-        }
-        
-        .main-visual::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('/api/placeholder/1200/600');
-            background-size: cover;
-            background-position: center;
-            opacity: 0.1;
-            z-index: 0;
-        }
-        
-        .main-visual-content {
-            position: relative;
-            z-index: 1;
-            max-width: 800px;
-            margin-inline: auto;
-            text-align: center;
-        }
-        
-        .main-visual h1 {
-            font-size: clamp(var(--font-size-xxl), 5vw, var(--font-size-xxxl));
-            font-weight: 700;
-            margin-bottom: var(--space-lg);
-            line-height: 1.2;
-        }
-        
-        .main-visual p {
-            font-size: clamp(var(--font-size-md), 3vw, var(--font-size-lg));
-            margin-bottom: var(--space-xl);
-            max-width: 600px;
-            margin-inline: auto;
-        }
-        
-        /* ボタン */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.75rem 1.5rem;
-            font-size: var(--font-size-md);
-            font-weight: 500;
-            text-align: center;
-            text-decoration: none;
-            cursor: pointer;
-            border-radius: var(--radius-md);
-            transition: var(--transition);
-            white-space: nowrap;
-            gap: var(--space-sm);
-            border: 2px solid transparent;
-            min-width: 160px;
-        }
-        
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: white;
-        }
-        
-        .btn-primary:hover, .btn-primary:focus {
-            background-color: var(--primary-dark);
-            color: white;
-            text-decoration: none;
-        }
-        
-        .btn-secondary {
-            background-color: var(--secondary-color);
-            color: white;
-        }
-        
-        .btn-secondary:hover, .btn-secondary:focus {
-            background-color: var(--secondary-dark);
-            color: white;
-            text-decoration: none;
-        }
-        
-        .btn-outline {
-            background-color: transparent;
-            border-color: currentColor;
-            color: var(--primary-color);
-        }
-        
-        .btn-outline:hover, .btn-outline:focus {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
-            color: white;
-            text-decoration: none;
-        }
-        
-        .btn-white {
-            background-color: white;
-            color: var(--primary-color);
-        }
-        
-        .btn-white:hover, .btn-white:focus {
-            background-color: rgba(255, 255, 255, 0.9);
-            color: var(--primary-dark);
-            text-decoration: none;
-        }
-        
-        .btn-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: var(--space-md);
-            justify-content: center;
-        }
-        
-        @media (max-width: 576px) {
-            .btn {
-                width: 100%;
-                max-width: 100%;
-                padding: 0.7rem 1rem;
-                font-size: var(--font-size-sm);
-            }
-            
-            .btn-group {
-                flex-direction: column;
-                width: 100%;
-            }
-        }
-        
-        /* 見出し */
-        .section-header {
-            text-align: center;
-            margin-bottom: var(--space-xl);
-            max-width: 800px;
-            margin-inline: auto;
-        }
-        
-        .section-header h2 {
-            font-size: var(--font-size-xxl);
-            color: var(--primary-color);
-            margin-bottom: var(--space-md);
-            position: relative;
-            padding-bottom: var(--space-md);
-        }
-        
-        .section-header h2::after {
-            content: "";
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 3px;
-            background-color: var(--primary-color);
-        }
-        
-        .section-header p {
-            font-size: var(--font-size-lg);
-            color: var(--text-light);
-        }
-        
-        @media (max-width: 768px) {
-            .section-header h2 {
-                font-size: var(--font-size-xl);
-            }
-            
-            .section-header p {
-                font-size: var(--font-size-md);
-            }
-        }
-        
-        /* ============================================
-           日本地図セクション
-        ============================================ */
-        .map-section {
-            background-color: var(--bg-light);
-            padding-block: var(--space-xxl);
-        }
-        
-        /* 地域タブ */
-        .region-tabs {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: var(--space-sm);
-            margin-bottom: var(--space-xl);
-            position: relative;
-        }
-        
-        .region-tab {
-            padding: var(--space-sm) var(--space-lg);
-            background-color: white;
-            color: var(--text-color);
-            border-radius: var(--radius-lg);
-            cursor: pointer;
-            transition: var(--transition);
-            font-weight: 500;
-            box-shadow: var(--shadow-sm);
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-        }
-        
-        .region-tab::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            right: 0;
-            top: 0;
-            bottom: 0;
-            background-color: var(--primary-color);
-            transform: scaleX(0);
-            transform-origin: 0 50%;
-            transition: transform 0.5s ease;
-            z-index: -1;
-        }
-        
-        .region-tab:hover, .region-tab:focus {
-            color: var(--primary-color);
-        }
-        
-        .region-tab.active {
-            color: white;
-            background-color: var(--primary-color);
-        }
-        
-        .region-tab.active::before {
-            transform: scaleX(1);
-        }
-        
-        @media (max-width: 768px) {
-            .region-tabs {
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-                scrollbar-width: none;
-                -ms-overflow-style: none;
-                flex-wrap: nowrap;
-                justify-content: flex-start;
-                gap: var(--space-xs);
-                padding-bottom: var(--space-sm);
-                margin-bottom: var(--space-lg);
-            }
-            
-            .region-tabs::-webkit-scrollbar {
-                display: none;
-            }
-            
-            .region-tab {
-                flex-shrink: 0;
-                font-size: var(--font-size-sm);
-                padding: var(--space-sm) var(--space-md);
-            }
-        }
-        
-        /* 日本地図 */
-        .japan-map-container {
-            max-width: 700px;
-            margin-inline: auto;
-            margin-bottom: var(--space-xl);
-            position: relative;
-            touch-action: manipulation;
-        }
-        
-        .japan-map {
-            width: 100%;
-            height: auto;
-            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));
-        }
-        
-        .prefecture {
-            fill: #e1f5e0;
-            stroke: white;
-            stroke-width: 1;
-            transition: fill 0.3s, transform 0.3s;
-            cursor: pointer;
-            transform-origin: center;
-        }
-        
-        .prefecture:hover, .prefecture:focus {
-            fill: var(--primary-color);
-            outline: none;
-            transform: scale(1.03);
-        }
-        
-        .prefecture:focus-visible {
-            stroke: var(--secondary-color);
-            stroke-width: 2;
-        }
-        
-        /* 地域ごとの色 */
-        .hokkaido { fill: #e8f5e9; }
-        .tohoku { fill: #c8e6c9; }
-        .kanto { fill: #a5d6a7; }
-        .chubu { fill: #81c784; }
-        .kinki { fill: #66bb6a; }
-        .chugoku { fill: #4caf50; }
-        .shikoku { fill: #43a047; }
-        .kyushu { fill: #388e3c; }
-        
-        /* 地域強調スタイル */
-        .region-active .prefecture {
-            opacity: 0.4;
-            transition: opacity 0.3s;
-        }
-        
-        .region-active .prefecture.active {
-            opacity: 1;
-            fill: var(--primary-color);
-        }
-        
-        /* ツールチップ */
-        .tooltip {
-            position: absolute;
-            background-color: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: var(--space-sm) var(--space-md);
-            border-radius: var(--radius-md);
-            font-size: var(--font-size-sm);
-            z-index: 100;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.3s, transform 0.3s;
-            transform: translateY(10px);
-            white-space: nowrap;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-        }
-        
-        .tooltip.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        .tooltip::after {
-            content: "";
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            margin-left: -5px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
-        }
-        
-        /* 都道府県リスト */
-        .prefecture-list-container {
-            background-color: white;
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-md);
-            padding: var(--space-xl);
-            margin-bottom: var(--space-xl);
-            display: none;
-        }
-        
-        .prefecture-list-container.active {
-            display: block;
-            animation: fadeIn 0.5s ease forwards;
-        }
-        
-        .prefecture-list-title {
-            font-size: var(--font-size-xl);
-            color: var(--primary-color);
-            margin-bottom: var(--space-lg);
-            padding-bottom: var(--space-md);
-            border-bottom: 1px solid var(--border-color);
-        }
-        
-        .prefecture-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: var(--space-md);
-        }
-        
-        @media (max-width: 768px) {
-            .prefecture-grid {
-                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-                gap: var(--space-sm);
-            }
-            
-            .prefecture-list-container {
-                padding: var(--space-lg);
-            }
-            
-            .prefecture-list-title {
-                font-size: var(--font-size-lg);
-                margin-bottom: var(--space-md);
-            }
-        }
-        
-        .prefecture-button {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: var(--space-sm) var(--space-md);
-            background-color: var(--bg-light);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-md);
-            font-weight: 500;
-            color: var(--text-color);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        
-        .prefecture-button:hover, .prefecture-button:focus {
-            background-color: var(--primary-light);
-            border-color: var(--primary-color);
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-sm);
-        }
-        
-        .prefecture-button:active {
-            transform: translateY(0);
-        }
-        
-        .prefecture-button .count {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 2px 8px;
-            border-radius: 50px;
-            font-size: var(--font-size-xs);
-            font-weight: bold;
-        }
-        
-        /* ============================================
-           特徴セクション
-        ============================================ */
-        .features {
-            padding-block: var(--space-xxl);
-            background-color: var(--bg-color);
-        }
-        
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: var(--space-xl);
-        }
-        
-        .feature-card {
-            background-color: var(--bg-light);
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            box-shadow: var(--shadow-md);
-            transition: var(--transition);
-            height: 100%;
-        }
-        
-        .feature-card:hover, .feature-card:focus-within {
-            transform: translateY(-10px);
-            box-shadow: var(--shadow-lg);
-        }
-        
-        .feature-img {
-            height: 200px;
-            background-color: var(--primary-light);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 4rem;
-        }
-        
-        .feature-content {
-            padding: var(--space-xl);
-        }
-        
-        .feature-content h3 {
-            font-size: var(--font-size-xl);
-            margin-bottom: var(--space-md);
-            color: var(--primary-color);
-        }
-        
-        .feature-content p {
-            color: var(--text-light);
-            margin-bottom: var(--space-lg);
-        }
-        
-        @media (max-width: 768px) {
-            .feature-img {
-                height: 160px;
-                font-size: 3rem;
-            }
-            
-            .feature-content {
-                padding: var(--space-lg);
-            }
-            
-            .feature-content h3 {
-                font-size: var(--font-size-lg);
-            }
-        }
-        
-        /* ============================================
-           CTAセクション
-        ============================================ */
-        .cta {
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-            color: white;
-            padding-block: calc(var(--space-xxl) * 1.25);
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .cta::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('/api/placeholder/1200/400');
-            background-size: cover;
-            background-position: center;
-            opacity: 0.1;
-            z-index: 0;
-        }
-        
-        .cta-container {
-            position: relative;
-            z-index: 1;
-            max-width: 800px;
-            margin-inline: auto;
-        }
-        
-        .cta h2 {
-            font-size: clamp(var(--font-size-xl), 5vw, var(--font-size-xxl));
-            margin-bottom: var(--space-md);
-        }
-        
-        .cta p {
-            font-size: clamp(var(--font-size-md), 3vw, var(--font-size-lg));
-            margin-bottom: var(--space-xl);
-            max-width: 600px;
-            margin-inline: auto;
-            opacity: 0.9;
-        }
-        
-        .cta-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: var(--space-md);
-        }
-        
-        @media (max-width: 768px) {
-            .cta h2 {
-                font-size: var(--font-size-xl);
-            }
-            
-            .cta p {
-                font-size: var(--font-size-md);
-            }
-            
-            .cta-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-        }
-        
-        /* ============================================
-           フッター
-        ============================================ */
-        .footer {
-            background-color: var(--text-color);
-            color: white;
-            padding-top: var(--space-xxl);
-            padding-bottom: var(--space-xl);
-        }
-        
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: var(--space-xl);
-            margin-bottom: var(--space-xl);
-        }
-        
-        .footer-column h3 {
-            font-size: var(--font-size-lg);
-            margin-bottom: var(--space-md);
-            position: relative;
-            padding-bottom: var(--space-sm);
-        }
-        
-        .footer-column h3::after {
-            content: "";
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 40px;
-            height: 2px;
-            background-color: var(--primary-light);
-        }
-        
-        .footer-column ul li {
-            margin-bottom: var(--space-sm);
-        }
-        
-        .footer-column ul li a {
-            color: rgba(255,255,255,0.8);
-            transition: var(--transition);
-        }
-        
-        .footer-column ul li a:hover, .footer-column ul li a:focus {
-            color: white;
-            text-decoration: none;
-        }
-        
-        .footer-bottom {
-            border-top: 1px solid rgba(255,255,255,0.1);
-            padding-top: var(--space-lg);
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            gap: var(--space-md);
-        }
-        
-        .footer-bottom p {
-            color: rgba(255,255,255,0.6);
-            font-size: var(--font-size-sm);
-        }
-        
-        @media (max-width: 768px) {
-            .footer-bottom {
-                flex-direction: column;
-                text-align: center;
-            }
-        }
-        
-        /* ============================================
-           アニメーション
-        ============================================ */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .fade-in {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-        
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        /* ページロード時のアニメーション */
-        .page-transition-enter {
-            opacity: 0;
-        }
-        
-        .page-transition-enter-active {
-            opacity: 1;
-            transition: opacity 0.5s;
-        }
-        
-        .page-transition-exit {
-            opacity: 1;
-        }
-        
-        .page-transition-exit-active {
-            opacity: 0;
-            transition: opacity 0.5s;
-        }
-    </style>
-</head>
-<body>
-    <!-- ヘッダー -->
-    <header class="header">
-        <div class="container">
-            <div class="header-container">
-                <a href="index.html" class="logo">
-                    <span>補助金リフォーム.com</span>
-                </a>
-                <nav class="nav">
-                    <button class="hamburger" aria-expanded="false" aria-controls="nav-menu" aria-label="メニューを開く">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </button>
-                    <ul id="nav-menu" class="nav-menu">
-                        <li><a href="#" class="nav-link active">ホーム</a></li>
-                        <li><a href="#" class="nav-link">補助金制度</a></li>
-                        <li><a href="#" class="nav-link">リフォーム事例</a></li>
-                        <li><a href="#" class="nav-link">施工会社を探す</a></li>
-                        <li><a href="#" class="nav-link">お問い合わせ</a></li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-    </header>
-
-    <!-- メインビジュアル -->
-    <section class="main-visual">
-        <div class="container">
-            <div class="main-visual-content fade-in">
-                <h1>あなたの地域の<br>リフォーム補助金を探そう</h1>
-                <p>補助金リフォーム.comでは、全国の自治体が提供するリフォーム補助金制度を簡単に検索できます。あなたの住まいに最適な支援制度をご紹介します。</p>
-                <div class="btn-group">
-                    <a href="#map-section" class="btn btn-white">地域から探す</a>
-                    <a href="#" class="btn btn-outline">条件から探す</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 日本地図セクション -->
-    <section id="map-section" class="map-section">
-        <div class="container">
-            <div class="section-header fade-in">
-                <h2>地域から補助金を探す</h2>
-                <p>お住まいの地域または希望の地域を選んで、利用できるリフォーム補助金を探してみましょう</p>
-            </div>
-            
-            <!-- 地域選択タブ -->
-            <div class="region-tabs fade-in" role="tablist">
-                <button class="region-tab" data-region="all" role="tab" aria-selected="true" aria-controls="all-list">全国</button>
-                <button class="region-tab" data-region="hokkaido" role="tab" aria-selected="false" aria-controls="hokkaido-list">北海道</button>
-                <button class="region-tab" data-region="tohoku" role="tab" aria-selected="false" aria-controls="tohoku-list">東北</button>
-                <button class="region-tab" data-region="kanto" role="tab" aria-selected="false" aria-controls="kanto-list">関東</button>
-                <button class="region-tab" data-region="chubu" role="tab" aria-selected="false" aria-controls="chubu-list">中部</button>
-                <button class="region-tab" data-region="kinki" role="tab" aria-selected="false" aria-controls="kinki-list">近畿</button>
-                <button class="region-tab" data-region="chugoku" role="tab" aria-selected="false" aria-controls="chugoku-list">中国</button>
-                <button class="region-tab" data-region="shikoku" role="tab" aria-selected="false" aria-controls="shikoku-list">四国</button>
-                <button class="region-tab" data-region="kyushu" role="tab" aria-selected="false" aria-controls="kyushu-list">九州・沖縄</button>
-            </div>
-            
-            <!-- 日本地図 -->
-            <div class="japan-map-container fade-in">
-                <svg class="japan-map" viewBox="0 0 553 528" xmlns="http://www.w3.org/2000/svg" aria-labelledby="map-title" role="img">
-                    <title id="map-title">日本地図 - クリックして地域を選択</title>
-                    <!-- 北海道 -->
-                    <path class="prefecture hokkaido" id="hokkaido" d="M403,80 L443,100 L483,70 L463,40 L483,10 L413,0 L373,20 L363,70 Z" data-name="北海道" data-count="26" tabindex="0" role="button" aria-label="北海道 - 26件の補助金"/>
-                    
-                    <!-- 東北 -->
-                    <path class="prefecture tohoku" id="aomori" d="M383,110 L393,130 L413,130 L423,110 L413,100 L393,100 Z" data-name="青森県" data-count="18" tabindex="0" role="button" aria-label="青森県 - 18件の補助金"/>
-                    <path class="prefecture tohoku" id="akita" d="M373,140 L393,130 L383,110 L363,120 L363,130 Z" data-name="秋田県" data-count="15" tabindex="0" role="button" aria-label="秋田県 - 15件の補助金"/>
-                    <path class="prefecture tohoku" id="iwate" d="M393,130 L413,130 L423,140 L413,150 L393,150 Z" data-name="岩手県" data-count="19" tabindex="0" role="button" aria-label="岩手県 - 19件の補助金"/>
-                    <path class="prefecture tohoku" id="yamagata" d="M373,140 L363,150 L373,170 L383,160 L383,150 Z" data-name="山形県" data-count="16" tabindex="0" role="button" aria-label="山形県 - 16件の補助金"/>
-                    <path class="prefecture tohoku" id="miyagi" d="M393,150 L413,150 L413,170 L393,170 L383,160 Z" data-name="宮城県" data-count="20" tabindex="0" role="button" aria-label="宮城県 - 20件の補助金"/>
-                    <path class="prefecture tohoku" id="fukushima" d="M373,170 L393,170 L413,170 L413,190 L383,190 L363,180 Z" data-name="福島県" data-count="21" tabindex="0" role="button" aria-label="福島県 - 21件の補助金"/>
-                    
-                    <!-- 関東 -->
-                    <path class="prefecture kanto" id="ibaraki" d="M393,190 L413,190 L413,210 L393,210 Z" data-name="茨城県" data-count="23" tabindex="0" role="button" aria-label="茨城県 - 23件の補助金"/>
-                    <path class="prefecture kanto" id="tochigi" d="M383,190 L393,190 L393,210 L383,210 Z" data-name="栃木県" data-count="19" tabindex="0" role="button" aria-label="栃木県 - 19件の補助金"/>
-                    <path class="prefecture kanto" id="gunma" d="M363,190 L383,190 L383,210 L373,210 Z" data-name="群馬県" data-count="18" tabindex="0" role="button" aria-label="群馬県 - 18件の補助金"/>
-                    <path class="prefecture kanto" id="saitama" d="M373,210 L393,210 L393,220 L373,220 Z" data-name="埼玉県" data-count="29" tabindex="0" role="button" aria-label="埼玉県 - 29件の補助金"/>
-                    <path class="prefecture kanto" id="chiba" d="M393,210 L413,210 L423,230 L403,240 L393,220 Z" data-name="千葉県" data-count="27" tabindex="0" role="button" aria-label="千葉県 - 27件の補助金"/>
-                    <path class="prefecture kanto" id="tokyo" d="M373,220 L393,220 L403,240 L373,240 Z" data-name="東京都" data-count="35" tabindex="0" role="button" aria-label="東京都 - 35件の補助金"/>
-                    <path class="prefecture kanto" id="kanagawa" d="M373,240 L403,240 L393,250 L363,250 Z" data-name="神奈川県" data-count="31" tabindex="0" role="button" aria-label="神奈川県 - 31件の補助金"/>
-                    
-                    <!-- 中部 -->
-                    <path class="prefecture chubu" id="niigata" d="M363,150 L343,160 L343,180 L363,180 Z" data-name="新潟県" data-count="22" tabindex="0" role="button" aria-label="新潟県 - 22件の補助金"/>
-                    <path class="prefecture chubu" id="toyama" d="M343,180 L323,180 L323,190 L343,190 Z" data-name="富山県" data-count="17" tabindex="0" role="button" aria-label="富山県 - 17件の補助金"/>
-                    <path class="prefecture chubu" id="ishikawa" d="M323,180 L313,160 L303,180 L313,190 L323,190 Z" data-name="石川県" data-count="16" tabindex="0" role="button" aria-label="石川県 - 16件の補助金"/>
-                    <path class="prefecture chubu" id="fukui" d="M303,180 L293,190 L303,200 L313,190 Z" data-name="福井県" data-count="14" tabindex="0" role="button" aria-label="福井県 - 14件の補助金"/>
-                    <path class="prefecture chubu" id="yamanashi" d="M363,210 L363,230 L343,230 L343,210 Z" data-name="山梨県" data-count="15" tabindex="0" role="button" aria-label="山梨県 - 15件の補助金"/>
-                    <path class="prefecture chubu" id="nagano" d="M343,190 L343,210 L363,210 L363,180 L343,180 Z" data-name="長野県" data-count="23" tabindex="0" role="button" aria-label="長野県 - 23件の補助金"/>
-                    <path class="prefecture chubu" id="gifu" d="M323,190 L343,190 L343,230 L323,230 L313,210 Z" data-name="岐阜県" data-count="19" tabindex="0" role="button" aria-label="岐阜県 - 19件の補助金"/>
-                    <path class="prefecture chubu" id="shizuoka" d="M343,230 L363,230 L363,250 L353,260 L333,250 Z" data-name="静岡県" data-count="24" tabindex="0" role="button" aria-label="静岡県 - 24件の補助金"/>
-                    <path class="prefecture chubu" id="aichi" d="M323,230 L343,230 L333,250 L313,250 Z" data-name="愛知県" data-count="28" tabindex="0" role="button" aria-label="愛知県 - 28件の補助金"/>
-                    
-                    <!-- 近畿 -->
-                    <path class="prefecture kinki" id="mie" d="M313,250 L333,250 L323,260 L303,260 Z" data-name="三重県" data-count="18" tabindex="0" role="button" aria-label="三重県 - 18件の補助金"/>
-                    <path class="prefecture kinki" id="shiga" d="M303,200 L313,210 L313,230 L303,230 Z" data-name="滋賀県" data-count="17" tabindex="0" role="button" aria-label="滋賀県 - 17件の補助金"/>
-                    <path class="prefecture kinki" id="kyoto" d="M293,190 L303,200 L303,230 L293,230 L283,210 Z" data-name="京都府" data-count="24" tabindex="0" role="button" aria-label="京都府 - 24件の補助金"/>
-                    <path class="prefecture kinki" id="osaka" d="M293,230 L303,230 L303,250 L293,250 Z" data-name="大阪府" data-count="32" tabindex="0" role="button" aria-label="大阪府 - 32件の補助金"/>
-                    <path class="prefecture kinki" id="hyogo" d="M283,210 L293,230 L293,250 L273,250 L263,230 Z" data-name="兵庫県" data-count="27" tabindex="0" role="button" aria-label="兵庫県 - 27件の補助金"/>
-                    <path class="prefecture kinki" id="nara" d="M303,230 L313,230 L313,250 L303,250 Z" data-name="奈良県" data-count="16" tabindex="0" role="button" aria-label="奈良県 - 16件の補助金"/>
-                    <path class="prefecture kinki" id="wakayama" d="M293,250 L303,250 L313,250 L303,260 L293,270 Z" data-name="和歌山県" data-count="15" tabindex="0" role="button" aria-label="和歌山県 - 15件の補助金"/>
-                    
-                    <!-- 中国 -->
-                    <path class="prefecture chugoku" id="tottori" d="M243,210 L263,210 L263,230 L243,230 Z" data-name="鳥取県" data-count="13" tabindex="0" role="button" aria-label="鳥取県 - 13件の補助金"/>
-                    <path class="prefecture chugoku" id="shimane" d="M223,210 L243,210 L243,230 L223,230 Z" data-name="島根県" data-count="14" tabindex="0" role="button" aria-label="島根県 - 14件の補助金"/>
-                    <path class="prefecture chugoku" id="okayama" d="M243,230 L263,230 L273,250 L253,250 Z" data-name="岡山県" data-count="19" tabindex="0" role="button" aria-label="岡山県 - 19件の補助金"/>
-                    <path class="prefecture chugoku" id="hiroshima" d="M223,230 L243,230 L253,250 L223,250 Z" data-name="広島県" data-count="23" tabindex="0" role="button" aria-label="広島県 - 23件の補助金"/>
-                    <path class="prefecture chugoku" id="yamaguchi" d="M193,230 L223,230 L223,250 L203,260 Z" data-name="山口県" data-count="16" tabindex="0" role="button" aria-label="山口県 - 16件の補助金"/>
-                    
-                    <!-- 四国 -->
-                    <path class="prefecture shikoku" id="tokushima" d="M273,270 L283,270 L283,290 L273,290 Z" data-name="徳島県" data-count="14" tabindex="0" role="button" aria-label="徳島県 - 14件の補助金"/>
-                    <path class="prefecture shikoku" id="kagawa" d="M253,270 L273,270 L273,290 L253,290 Z" data-name="香川県" data-count="15" tabindex="0" role="button" aria-label="香川県 - 15件の補助金"/>
-                    <path class="prefecture shikoku" id="ehime" d="M233,270 L253,270 L253,290 L233,290 Z" data-name="愛媛県" data-count="17" tabindex="0" role="button" aria-label="愛媛県 - 17件の補助金"/>
-                    <path class="prefecture shikoku" id="kochi" d="M233,290 L253,290 L273,290 L283,290 L283,310 L233,310 Z" data-name="高知県" data-count="14" tabindex="0" role="button" aria-label="高知県 - 14件の補助金"/>
-                    
-                    <!-- 九州・沖縄 -->
-                    <path class="prefecture kyushu" id="fukuoka" d="M173,270 L193,270 L193,290 L173,290 Z" data-name="福岡県" data-count="25" tabindex="0" role="button" aria-label="福岡県 - 25件の補助金"/>
-                    <path class="prefecture kyushu" id="saga" d="M153,270 L173,270 L173,290 L153,290 Z" data-name="佐賀県" data-count="13" tabindex="0" role="button" aria-label="佐賀県 - 13件の補助金"/>
-                    <path class="prefecture kyushu" id="nagasaki" d="M133,270 L153,270 L153,290 L133,290 Z" data-name="長崎県" data-count="14" tabindex="0" role="button" aria-label="長崎県 - 14件の補助金"/>
-                    <path class="prefecture kyushu" id="kumamoto" d="M153,290 L173,290 L173,310 L153,310 Z" data-name="熊本県" data-count="19" tabindex="0" role="button" aria-label="熊本県 - 19件の補助金"/>
-                    <path class="prefecture kyushu" id="oita" d="M173,290 L193,290 L193,310 L173,310 Z" data-name="大分県" data-count="16" tabindex="0" role="button" aria-label="大分県 - 16件の補助金"/>
-                    <path class="prefecture kyushu" id="miyazaki" d="M173,310 L193,310 L193,330 L173,330 Z" data-name="宮崎県" data-count="15" tabindex="0" role="button" aria-label="宮崎県 - 15件の補助金"/>
-                    <path class="prefecture kyushu" id="kagoshima" d="M153,310 L173,310 L173,330 L153,350 L133,330 Z" data-name="鹿児島県" data-count="18" tabindex="0" role="button" aria-label="鹿児島県 - 18件の補助金"/>
-                    <path class="prefecture kyushu" id="okinawa" d="M123,380 L143,380 L143,400 L123,400 Z" data-name="沖縄県" data-count="19" tabindex="0" role="button" aria-label="沖縄県 - 19件の補助金"/>
-                </svg>
-                <div class="tooltip" role="status" aria-live="polite"></div>
-            </div>
-            
-            <!-- 都道府県リスト（地域選択後に表示） -->
-            <div class="prefecture-list-container" id="hokkaido-list" role="tabpanel" aria-labelledby="hokkaido-tab">
-                <h3 class="prefecture-list-title">北海道の補助金</h3>
-                <div class="prefecture-grid">
-                    <button class="prefecture-button">北海道 <span class="count">26</span></button>
-                </div>
-            </div>
-            
-            <div class="prefecture-list-container" id="tohoku-list" role="tabpanel" aria-labelledby="tohoku-tab">
-                <h3 class="prefecture-list-title">東北地方の補助金</h3>
-                <div class="prefecture-grid">
-                    <button class="prefecture-button">青森県 <span class="count">18</span></button>
-                    <button class="prefecture-button">秋田県 <span class="count">15</span></button>
-                    <button class="prefecture-button">岩手県 <span class="count">19</span></button>
-                    <button class="prefecture-button">山形県 <span class="count">16</span></button>
-                    <button class="prefecture-button">宮城県 <span class="count">20</span></button>
-                    <button class="prefecture-button">福島県 <span class="count">21</span></button>
-                </div>
-            </div>
-            
-            <div class="prefecture-list-container" id="kanto-list" role="tabpanel" aria-labelledby="kanto-tab">
-                <h3 class="prefecture-list-title">関東地方の補助金</h3>
-                <div class="prefecture-grid">
-                    <button class="prefecture-button">茨城県 <span class="count">23</span></button>
-                    <button class="prefecture-button">栃木県 <span class="count">19</span></button>
-                    <button class="prefecture-button">群馬県 <span class="count">18</span></button>
-                    <button class="prefecture-button">埼玉県 <span class="count">29</span></button>
-                    <button class="prefecture-button">千葉県 <span class="count">27</span></button>
-                    <button class="prefecture-button">東京都 <span class="count">35</span></button>
-                    <button class="prefecture-button">神奈川県 <span class="count">31</span></button>
-                </div>
-            </div>
+</html>
