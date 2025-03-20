@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【DOORS】理想の住まいを見つけるなら</title>
+    <style>
+        /* リセットCSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* 基本設定 */
+        body {
+            font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ ProN W3', 'メイリオ', Meiryo, sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background-color: #fff;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        /* ヘッダー */
+        header {
+            background-color: #fff;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #0055b3;
+            text-decoration: none;
+        }
+        
+        /* メインビジュアル */
+        .main-visual {
+            background: linear-gradient(135deg, #0076d7, #005bb3);
+            color: white;
+            padding: 120px 0 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .main-visual::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('/api/placeholder/1200/600') no-repeat center/cover;
+            opacity: 0.2;
+            z-index: 0;
+        }
+        
+        .main-visual-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .main-visual h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            line-height: 1.4;
+        }
+        
+        .main-visual p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* ボタン */
+        .btn {
+            display: inline-block;
+            background-color: #ff6c00;
+            color: white;
+            text-decoration: none;
+            padding: 18px 40px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 12px rgba(255,108,0,0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background-color: #ff8124;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(255,108,0,0.4);
+        }
+        
+        /* 特徴セクション */
+        .features {
+            padding: 80px 0;
+            background-color: #f8fbff;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-header h2 {
+            font-size: 2.2rem;
+            color: #0055b3;
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-header h2::after {
+            content: "";
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: #0076d7;
+        }
+        
+        .section-header p {
+            font-size: 1.1rem;
+            color: #666;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+        }
+        
+        .feature-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+        }
+        
+        .feature-img {
+            height: 200px;
+            background-color: #e9f2ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+        
+        .feature-content {
+            padding: 30px;
+        }
+        
+        .feature-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #0055b3;
+        }
+        
+        /* お客様の声 */
+        .testimonials {
+            padding: 80px 0;
+            background-color: white;
+        }
+        
+        .testimonial-slider {
+            margin-top: 40px;
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; /* Firefox */
+        }
+        
+        .testimonial-slider::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+        
+        .testimonial-card {
+            scroll-snap-align: start;
+            flex-shrink: 0;
+            width: 90%;
+            max-width: 400px;
+            margin-right: 30px;
+            background-color: #f8fbff;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            position: relative;
+        }
+        
+        .testimonial-card::before {
+            content: """;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 60px;
+            color: #0076d7;
+            opacity: 0.2;
+            line-height: 1;
+        }
+        
+        .testimonial-text {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #ddd;
+            margin-right: 15px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .author-info h4 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+        
+        .author-info p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        /* 特典セクション */
+        .benefits {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #f8fbff 0%, #eaf4ff 100%);
+        }
+        
+        .benefits-content {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 60px;
+        }
+        
+        .benefits-text {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .benefits-text h2 {
+            font-size: 2.2rem;
+            color: #0055b3;
+            margin-bottom: 25px;
+        }
+        
+        .benefits-list {
+            list-style: none;
+        }
+        
+        .benefits-list li {
+            margin-bottom: 20px;
+            padding-left: 30px;
+            position: relative;
+            font-size: 1.1rem;
+        }
+        
+        .benefits-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #0076d7;
+            font-weight: bold;
+        }
+        
+        .benefits-image {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            justify-content: center;
+        }
+        
+        /* CTAセクション */
+        .cta {
+            background: linear-gradient(135deg, #0076d7, #004a9f);
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+        }
+        
+        .cta-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 25px;
+        }
+        
+        .cta p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .btn-secondary {
+            background-color: white;
+            color: #0055b3;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #f8f8f8;
+        }
+        
+        /* フッター */
+        footer {
+            background-color: #003b7a;
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-column h3::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: #0076d7;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-column ul li a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .footer-bottom p {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.9rem;
+        }
+        
+        /* レスポンシブ対応 */
+        @media (max-width: 768px) {
+            .main-visual h1 {
+                font-size: 2rem;
+            }
+            
+            .main-visual p {
+                font-size: 1rem;
+            }
+            
+            .benefits-content {
+                flex-direction: column;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .section-header h2 {
+                font-size: 1.8rem;
+            }
+        }
+        
+        /* フォーム要素 */
+        .form-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            margin-top: 40px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #444;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: #0076d7;
+            outline: none;
+        }
+        
+        .form-note {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .form-submit {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        /* アニメーション */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate {
+            animation: fadeIn 0.8s ease forwards;
+        }
+    </style>
+</head>
+<body>
+    <!-- ヘッダー -->
+    <header>
+        <div class="header-container">
+            <a href="#" class="logo">DOORS</a>
+            <nav>
+                <!-- モバイルメニュー対応が必要な場合はここに追加 -->
+            </nav>
+        </div>
+    </header>
+
+    <!-- メインビジュアル -->
+    <section class="main-visual">
+        <div class="main-visual-content animate">
+            <h1>あなたの理想の住まいを<br>見つける新しい方法</h1>
+            <p>DOORSは、あなたのライフスタイルに合った住まい探しをサポート。専任アドバイザーが理想の物件をご提案します。</p>
+            <a href="#contact" class="btn">無料相談を予約する</a>
+        </div>
+    </section>
+
+    <!-- 特徴セクション -->
+    <section class="features">
+        <div class="container">
+            <div class="section-header animate">
+                <h2>DOORSの特徴</h2>
+                <p>他にはない、私たちだけのサービス</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card animate">
+                    <div class="feature-img">🏠</div>
+                    <div class="feature-content">
+                        <h3>プレミアム物件</h3>
+                        <p>一般には公開されていない厳選された物件情報を多数保有。あなたにぴったりの物件をご紹介します。</p>
+                    </div>
+                </div>
+                <div class="feature-card animate">
+                    <div class="feature-img">👨‍💼</div>
+                    <div class="feature-content">
+                        <h3>専任アドバイザー</h3>
+                        <p>経験豊富な専門家があなたの要望をヒアリング。理想の住まい探しを徹底サポートします。</p>
+                    </div>
+                </div>
+                <div class="feature-card animate">
+                    <div class="feature-img">📱</div>
+                    <div class="feature-content">
+                        <h3>便利なアプリ</h3>
+                        <p>スマホから簡単に物件検索・内見予約が可能。お気に入り物件の管理も楽々できます。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- お客様の声 -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-header animate">
+                <h2>お客様の声</h2>
+                <p>DOORSをご利用いただいたお客様からの喜びの声</p>
+            </div>
+            <div class="testimonial-slider">
+                <div class="testimonial-card animate">
+                    <p class="testimonial-text">「初めての購入で不安でしたが、DOORSのアドバイザーさんが親身になって対応してくれました。希望通りの物件に出会えて感謝しています。」</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">👩</div>
+                        <div class="author-info">
+                            <h4>田中さん</h4>
+                            <p>30代・会社員</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card animate">
+                    <p class="testimonial-text">「他社では見つからなかった条件の物件を紹介していただき、大変満足しています。次回も必ずDOORSを利用したいと思います。」</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">👨</div>
+                        <div class="author-info">
+                            <h4>佐藤さん</h4>
+                            <p>40代・自営業</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card animate">
+                    <p class="testimonial-text">「アプリが使いやすく、欲しい情報がすぐに見つかりました。内見の予約もスムーズで、とても便利でした。」</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">👧</div>
+                        <div class="author-info">
+                            <h4>鈴木さん</h4>
+                            <p>20代・学生</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 特典セクション -->
+    <section class="benefits">
+        <div class="container">
+            <div class="benefits-content">
+                <div class="benefits-text animate">
+                    <h2>今だけの特別特典</h2>
+                    <ul class="benefits-list">
+                        <li>初回相談料無料（通常10,000円）</li>
+                        <li>物件資料集プレゼント</li>
+                        <li>引越し費用最大30%OFF</li>
+                        <li>契約時に豪華家電プレゼント</li>
+                        <li>インテリアコーディネート相談無料</li>
+                    </ul>
+                    <p style="margin-top: 30px;">※特典は予告なく終了する場合があります。お早めにご予約ください。</p>
+                </div>
+                <div class="benefits-image animate">
+                    <img src="/api/placeholder/500/400" alt="特典イメージ" />
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTAセクション -->
+    <section class="cta" id="contact">
+        <div class="cta-container animate">
+            <h2>理想の住まい探しを始めましょう</h2>
+            <p>まずは無料相談から。あなたの希望をお聞かせください。</p>
+            <div class="form-container">
+                <form action="#" method="post">
+                    <div class="form-group">
+                        <label for="name">お名前</label>
+                        <input type="text" id="name" class="form-control" placeholder="例：山田 太郎" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">メールアドレス</label>
+                        <input type="email" id="email" class="form-control" placeholder="例：example@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">電話番号</label>
+                        <input type="tel" id="phone" class="form-control" placeholder="例：090-1234-5678">
+                        <p class="form-note">※ハイフン（-）ありでご入力ください</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">ご希望・ご要望</label>
+                        <textarea id="message" class="form-control" rows="4" placeholder="ご希望の地域や条件、ご質問などをお書きください"></textarea>
+                    </div>
+                    <div class="form-submit">
+                        <button type="submit" class="btn">無料相談を予約する</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- フッター -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h3>DOORS</h3>
+                    <p style="color: rgba(255,255,255,0.8); margin-bottom: 20px;">あなたの理想の住まい探しをサポートする不動産エージェント</p>
+                    <p style="color: rgba(255,255,255,0.8);">〒100-0001<br>東京都千代田区1-1-1<br>DOORSビル5F</p>
+                </div>
+                <div class="footer-column">
+                    <h3>サービス</h3>
+                    <ul>
+                        <li><a href="#">物件検索</a></li>
+                        <li><a href="#">売買物件</a></li>
+                        <li><a href="#">賃貸物件</a></li>
+                        <li><a href="#">投資物件</a></li>
+                        <li><a href="#">リノベーション</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>会社情報</h3>
+                    <ul>
+                        <li><a href="#">会社概要</a></li>
+                        <li><a href="#">スタッフ紹介</a></li>
+                        <li><a href="#">アクセス</a></li>
+                        <li><a href="#">採用情報</a></li>
+                        <li><a href="#">ニュース</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>お問い合わせ</h3>
+                    <ul>
+                        <li><a href="#">お問い合わせフォーム</a></li>
+                        <li><a href="#">よくある質問</a></li>
+                        <li><a href="#">プライバシーポリシー</a></li>
+                        <li><a href="#">利用規約</a></li>
+                        <li><a href="#">サイトマップ</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 DOORS All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // スクロールアニメーション
+        document.addEventListener('DOMContentLoaded', function() {
+            const animateElements = document.querySelectorAll('.animate');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            animateElements.forEach(element => {
+                element.style.opacity = 0;
+                element.style.transform = 'translateY(20px)';
+                element.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                observer.observe(element);
+            });
+        });
+    </script>
+</body>
+</html>
