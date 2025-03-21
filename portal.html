@@ -65,6 +65,7 @@
         .nav-menu {
             display: flex;
             gap: 20px;
+            list-style: none;
         }
         
         .nav-link {
@@ -170,6 +171,8 @@
             border-radius: 4px;
             cursor: pointer;
             transition: all 0.3s;
+            border: none;
+            font-size: 14px;
         }
         
         .region-tab:hover, .region-tab.active {
@@ -265,6 +268,10 @@
             background-color: #4caf50;
         }
         
+        .footer-column ul {
+            list-style: none;
+        }
+        
         .footer-column ul li {
             margin-bottom: 10px;
         }
@@ -321,6 +328,168 @@
                         <li><a href="#" class="nav-link">リフォーム事例</a></li>
                         <li><a href="#" class="nav-link">お問い合わせ</a></li>
                     </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 補助金リフォーム.com All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // DOMが完全に読み込まれたあとに実行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 要素の取得
+            const prefectures = document.querySelectorAll('.prefecture');
+            const regionTabs = document.querySelectorAll('.region-tab');
+            const prefectureContainer = document.getElementById('prefecture-container');
+            
+            // 地域タブのクリックイベント
+            regionTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // アクティブクラスを全て解除
+                    regionTabs.forEach(t => t.classList.remove('active'));
+                    
+                    // クリックされたタブをアクティブに
+                    this.classList.add('active');
+                    
+                    // 選択された地域を取得
+                    const region = this.getAttribute('data-region');
+                    
+                    // 地域に基づいて都道府県をフィルタリング
+                    if (region === 'all') {
+                        // 全ての都道府県を表示
+                        prefectures.forEach(pref => {
+                            pref.style.fill = ''; // デフォルトの色に戻す
+                        });
+                        
+                        // 全国リストを表示
+                        showPrefectureList('all');
+                    } else {
+                        // 選択された地域の都道府県をハイライト
+                        prefectures.forEach(pref => {
+                            if (pref.classList.contains(region)) {
+                                pref.style.fill = '#4caf50'; // ハイライト色
+                            } else {
+                                pref.style.fill = '#e8f5e9'; // デフォルト色
+                            }
+                        });
+                        
+                        // 地域に基づいたリストを表示
+                        showRegionPrefectures(region);
+                    }
+                });
+            });
+            
+            // 都道府県のクリックイベント
+            prefectures.forEach(prefecture => {
+                prefecture.addEventListener('click', function() {
+                    const prefName = this.getAttribute('data-name');
+                    const count = this.getAttribute('data-count');
+                    alert(`${prefName}の補助金情報（${count}件）へ移動します`);
+                    // 実際はここでリダイレクトなどの処理
+                });
+            });
+            
+            // 都道府県ボタンのクリックイベント
+            document.querySelectorAll('.prefecture-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const prefName = this.textContent.split(' ')[0];
+                    alert(`${prefName}の補助金情報ページへ移動します`);
+                    // 実際はここでリダイレクトなどの処理
+                });
+            });
+            
+            // 地域ごとの都道府県リストを表示する関数
+            function showRegionPrefectures(region) {
+                // すでにある全国リストを使って、該当の地域の県だけフィルタリングして表示
+                const allButtons = document.querySelectorAll('#all-list .prefecture-button');
+                const regionPrefectures = [];
+                
+                // 地域ごとの都道府県のリスト
+                const regionMap = {
+                    'hokkaido': ['北海道'],
+                    'tohoku': ['青森県', '秋田県', '岩手県', '山形県', '宮城県', '福島県'],
+                    'kanto': ['茨城県', '栃木県', '群馬県', '埼玉県', '千葉県', '東京都', '神奈川県'],
+                    'chubu': ['新潟県', '富山県', '石川県', '福井県', '山梨県', '長野県', '岐阜県', '静岡県', '愛知県'],
+                    'kinki': ['三重県', '滋賀県', '京都府', '大阪府', '兵庫県', '奈良県', '和歌山県'],
+                    'chugoku': ['鳥取県', '島根県', '岡山県', '広島県', '山口県'],
+                    'shikoku': ['徳島県', '香川県', '愛媛県', '高知県'],
+                    'kyushu': ['福岡県', '佐賀県', '長崎県', '熊本県', '大分県', '宮崎県', '鹿児島県', '沖縄県']
+                };
+                
+                // 該当の地域の県だけをフィルタリング
+                allButtons.forEach(button => {
+                    const prefName = button.textContent.split(' ')[0];
+                    if (regionMap[region].includes(prefName)) {
+                        const clone = button.cloneNode(true);
+                        regionPrefectures.push(clone);
+                    }
+                });
+                
+                // 既存のリストをクリアして、フィルタリングしたものを表示
+                prefectureContainer.innerHTML = '';
+                const newList = document.createElement('div');
+                newList.className = 'prefecture-list';
+                newList.id = `${region}-list`;
+                
+                regionPrefectures.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const prefName = this.textContent.split(' ')[0];
+                        alert(`${prefName}の補助金情報ページへ移動します`);
+                    });
+                    newList.appendChild(button);
+                });
+                
+                prefectureContainer.appendChild(newList);
+            }
+            
+            // デフォルトで全国を表示
+            function showPrefectureList(listId) {
+                if (listId === 'all') {
+                    // 元のHTMLをコピーして使う方法に変更
+                    const allList = document.getElementById('all-list');
+                    if (allList) {
+                        prefectureContainer.innerHTML = '';
+                        const clone = allList.cloneNode(true);
+                        prefectureContainer.appendChild(clone);
+                        
+                        // 新しく追加されたボタンにイベントリスナーを設定
+                        document.querySelectorAll('#prefecture-container .prefecture-button').forEach(button => {
+                            button.addEventListener('click', function() {
+                                const prefName = this.textContent.split(' ')[0];
+                                alert(`${prefName}の補助金情報ページへ移動します`);
+                            });
+                        });
+                    }
+                }
+            }
+            
+            // スムーススクロール
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        const headerHeight = document.querySelector('.header').offsetHeight;
+                        const elementPosition = target.offsetTop;
+                        const offsetPosition = elementPosition - headerHeight;
+
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // 初期表示
+            document.querySelector('.region-tab[data-region="all"]').click();
+        });
+    </script>
+</body>
+</html>
                 </nav>
             </div>
         </div>
@@ -547,166 +716,3 @@
                         <li><a href="#">利用規約</a></li>
                         <li><a href="#">サイトマップ</a></li>
                     </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>© 2025 補助金リフォーム.com All Rights Reserved.</p>
-            </div>
-        </div>
-    </footer>
-
-    <script>
-        // DOMが完全に読み込まれたあとに実行
-        document.addEventListener('DOMContentLoaded', function() {
-            // 要素の取得
-            const prefectures = document.querySelectorAll('.prefecture');
-            const regionTabs = document.querySelectorAll('.region-tab');
-            const prefectureContainer = document.getElementById('prefecture-container');
-            
-            // 地域タブのクリックイベント
-            regionTabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    // アクティブクラスを全て解除
-                    regionTabs.forEach(t => t.classList.remove('active'));
-                    
-                    // クリックされたタブをアクティブに
-                    this.classList.add('active');
-                    
-                    // 選択された地域を取得
-                    const region = this.getAttribute('data-region');
-                    
-                    // 地域に基づいて都道府県をフィルタリング
-                    if (region === 'all') {
-                        // 全ての都道府県を表示
-                        prefectures.forEach(pref => {
-                            pref.style.fill = ''; // デフォルトの色に戻す
-                        });
-                        
-                        // 全国リストを表示
-                        showPrefectureList('all');
-                    } else {
-                        // 選択された地域の都道府県をハイライト
-                        prefectures.forEach(pref => {
-                            if (pref.classList.contains(region)) {
-                                pref.style.fill = '#4caf50'; // ハイライト色
-                            } else {
-                                pref.style.fill = '#e8f5e9'; // デフォルト色
-                            }
-                        });
-                        
-                        // 地域に基づいたリストを表示
-                        showRegionPrefectures(region);
-                    }
-                });
-            });
-            
-            // 都道府県のクリックイベント
-            prefectures.forEach(prefecture => {
-                prefecture.addEventListener('click', function() {
-                    const prefName = this.getAttribute('data-name');
-                    const count = this.getAttribute('data-count');
-                    alert(`${prefName}の補助金情報（${count}件）へ移動します`);
-                    // 実際はここでリダイレクトなどの処理
-                });
-                
-                // マウスオーバーイベント
-                prefecture.addEventListener('mouseover', function() {
-                    const prefName = this.getAttribute('data-name');
-                    const count = this.getAttribute('data-count');
-                    // ツールチップなどを表示する場合はここに処理
-                });
-            });
-            
-            // 都道府県ボタンのクリックイベント
-            document.querySelectorAll('.prefecture-button').forEach(button => {
-                button.addEventListener('click', function() {
-                    const prefName = this.textContent.split(' ')[0];
-                    alert(`${prefName}の補助金情報ページへ移動します`);
-                    // 実際はここでリダイレクトなどの処理
-                });
-            });
-            
-            // 地域ごとの都道府県リストを表示する関数
-            function showRegionPrefectures(region) {
-                // すでにある全国リストを使って、該当の地域の県だけフィルタリングして表示
-                const allButtons = document.querySelectorAll('#all-list .prefecture-button');
-                const regionPrefectures = [];
-                
-                // 地域ごとの都道府県のリスト
-                const regionMap = {
-                    'hokkaido': ['北海道'],
-                    'tohoku': ['青森県', '秋田県', '岩手県', '山形県', '宮城県', '福島県'],
-                    'kanto': ['茨城県', '栃木県', '群馬県', '埼玉県', '千葉県', '東京都', '神奈川県'],
-                    'chubu': ['新潟県', '富山県', '石川県', '福井県', '山梨県', '長野県', '岐阜県', '静岡県', '愛知県'],
-                    'kinki': ['三重県', '滋賀県', '京都府', '大阪府', '兵庫県', '奈良県', '和歌山県'],
-                    'chugoku': ['鳥取県', '島根県', '岡山県', '広島県', '山口県'],
-                    'shikoku': ['徳島県', '香川県', '愛媛県', '高知県'],
-                    'kyushu': ['福岡県', '佐賀県', '長崎県', '熊本県', '大分県', '宮崎県', '鹿児島県', '沖縄県']
-                };
-                
-                // 該当の地域の県だけをフィルタリング
-                allButtons.forEach(button => {
-                    const prefName = button.textContent.split(' ')[0];
-                    if (regionMap[region].includes(prefName)) {
-                        const clone = button.cloneNode(true);
-                        regionPrefectures.push(clone);
-                    }
-                });
-                
-                // 既存のリストをクリアして、フィルタリングしたものを表示
-                prefectureContainer.innerHTML = '';
-                const newList = document.createElement('div');
-                newList.className = 'prefecture-list';
-                newList.id = `${region}-list`;
-                
-                regionPrefectures.forEach(button => {
-                    button.addEventListener('click', function() {
-                        const prefName = this.textContent.split(' ')[0];
-                        alert(`${prefName}の補助金情報ページへ移動します`);
-                    });
-                    newList.appendChild(button);
-                });
-                
-                prefectureContainer.appendChild(newList);
-            }
-            
-            // デフォルトで全国を表示
-            function showPrefectureList(listId) {
-                if (listId === 'all') {
-                    prefectureContainer.innerHTML = document.getElementById('all-list').outerHTML;
-                    
-                    // 新しく追加されたボタンにイベントリスナーを設定
-                    document.querySelectorAll('#prefecture-container .prefecture-button').forEach(button => {
-                        button.addEventListener('click', function() {
-                            const prefName = this.textContent.split(' ')[0];
-                            alert(`${prefName}の補助金情報ページへ移動します`);
-                        });
-                    });
-                }
-            }
-            
-            // スムーススクロール
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    
-                    const target = document.querySelector(this.getAttribute('href'));
-                    if (target) {
-                        const headerHeight = document.querySelector('.header').offsetHeight;
-                        const elementPosition = target.offsetTop;
-                        const offsetPosition = elementPosition - headerHeight;
-
-                        window.scrollTo({
-                            top: offsetPosition,
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            });
-            
-            // 初期表示
-            document.querySelector('.region-tab[data-region="all"]').click();
-        });
-    </script>
-</body>
-</html>
